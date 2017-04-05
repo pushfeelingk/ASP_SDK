@@ -41,14 +41,22 @@
 	* app > Dependencies에서 위에서 추가한 module Dependency를 등록한다.
 	<img src="https://cloud.githubusercontent.com/assets/22470636/24691190/fe8b67e0-1a0c-11e7-894e-f1ed9d1d84e2.png"/>
 
-
-	
+	* AndroidManifest.xml을 설정한다.
+	```xml
+	<receiver android:name="(package_name).FlkAspMessageReceiver" >
+            <intent-filter>
+                <action android:name="com.feelingk.asp.pushagent.receive_message" />
+            </intent-filter>
+        </receiver>
+	```
+<br>	
 2. Eclipse에서 개발하기 
 	
  	* ASP SDK Project를 다운로드 받아 Eclipse에 import한다. SDK를 적용할 프로젝트의 Properties를 선택한다. Library영역에 FLK_ASP_SDK를 추가한다.
   
 		<img src="https://cloud.githubusercontent.com/assets/22470636/24691405/3ca13cde-1a0e-11e7-973b-6da36883b7dc.png" />
 
+<br>
 	* AndroidManifest.xml을 설정한다.
 		* user-permission 리스트를 적용한다.
 	```xml
@@ -144,19 +152,6 @@
             android:enabled="true" >
         </service>
 
-        <service android:name="com.feelingk.pushagent.service.RIDInfoValidCheckService"/>
-        
-        <receiver android:name="com.feelingk.pushagent.service.LBSServiceAlarmManager" >
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.lib.action.lbsinfo.lm" />
-                <action android:name="com.feelingk.asp.pushagent.lib.action.lbsinfo.lmInit" />
-                <action android:name="com.feelingk.asp.pushagent.lib.action.lbsinfo.wf" />
-                <action android:name="com.feelingk.asp.pushagent.lib.action.lbsinfo.bl" />
-                <action android:name="com.feelingk.asp.pushagent.lib.action.lbsinfo.cl" />
-                <action android:name="com.feelingk.asp.pushagent.lib.action.lbsinfo.al" />
-            </intent-filter>
-        </receiver>
-
         <service android:name="com.feelingk.pushagent.service.RIDInfoValidCheckService" />
 
         <activity
@@ -168,64 +163,22 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
-        <activity
-            android:name="com.flk.asp.activity.PushPopupActivity"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        <activity
-            android:name="com.flk.asp.activity.LocationAgreeActivity"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        <activity
-            android:name="com.flk.asp.activity.CouponReceiveActivity"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Holo.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        <activity
-            android:name="com.flk.asp.activity.CouponConfigActivity"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Holo.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        <activity
-            android:name="com.flk.asp.activity.CouponDetailActivity"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Holo.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        
+        <receiver android:name="(package_name).FlkAspMessageReceiver" >
+            <intent-filter>
+                <action android:name="com.feelingk.asp.pushagent.RECEIVE_MESSAGE" />
+		<action android:name="com.feelingk.asp.pushagent.ERROR" />
+            </intent-filter>
+        </receiver>
         <provider android:name="com.feelingk.pushagent.db.DataContentProvider" android:authorities="[packageName]" android:exported="true"/>
 	```
-    	
-3. 프로가드 적용시 아래 설정을 추가한다.
+<br>	
+#### Proguard 예외 구문
 	``` txt
 	-dontwarn org.apache.**
 	-keep class com.feelingk.pushagent.** { *; }
 	-keep class com.flk.asp.** { *; }
 	```
-
 <br>
-    
 #### SDK 적용 및 Sample Code
 1. res > values > strings.xml에 AppID값을 등록한다. 
 	```xml
@@ -235,46 +188,45 @@
     ```
 2. 'FLKPushAgentLIB'를 사용할 Activity에 아래와 같이 구현한다.
 	```java
-	public class ExampleActivity extends AppCompatActivity implements FLKPushInterface.OnPushLibResultListener{
-
-	    private FLKPushInterface flkInterface;
-
+	public class ExampleActivity extends AppCompatActivity {
     	@Override
 	    protected void onCreate(Bundle savedInstanceState) {
     	    super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_example);
 
-			/** 
-	         * FLKPushAgentLIB 인터페이스 생성 
-        	 * this : Context
-    	     * this : FLKPushInterface.OnPushLibResultListener OLYMPUSH 앱 연동 결과를 리턴해준다.
-	         */
-        	flkInterface = new FLKPushInterface(this, this);
-            // service에 사용되는 사용자 고유 키 값이 있다면 아래의 userKey에 세팅하여 사용 가능.
-			//flkInterface = new FLKPushInterface(this, "userKey", this);
-            flkInterface.interfaceInit();
-
-    	    Button receiveMessagebox = (Button)findViewById(R.id.btn_received_messagebox);
-	        receiveMessagebox.setOnClickListener(new View.OnClickListener() {
-        	    @Override
-    	        public void onClick(View view) {
-                	// Agent 내의 수신함 연동
-	                if (flkInterface != null) {
-                	    flkInterface.sendToReceiveActivity();
-            	    }
-        	    }
-    	    });
-
-	    }
-
-    	@Override
-	    public void onResult(int resultCode) {
-    	  // 응답코드에 따른 결과 처리 
-	    }
+		// FLK ASP 초기화
+		FlkAspSdk.initialize(this);
+		// UserKey 셋팅
+		FlkAspSdk.setUserKey("<userkey>");
 	}
 	```
-
-3. 응답 코드
+3. GCM Receiver에서 처리
+	* Register or TokenRefresh 후
+	```java
+	FlkAspSdk.setGcmKey(context, "<gcm_reg_id>");
+	```
+	* Message 수신 후
+	```java
+	FlkAspSdk.wakeUp(context);
+	```
+3. 샘플로 제공된 FlkAspMessageReceiver에서 메시지를 처리한다.
+	```java
+	public class FlkAspMessageReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(final Context context, Intent intent) {
+			if (intent.getAction().equals("com.feelingk.asp.pushagent.RECEIVE_MESSAGE")) {
+				FlkPushMessage pushMessage = FlkAspSdk.convertMessage(intent);
+				if (pushMessage != null) {
+					// 메시지 처리
+				}
+			} else if (intent.getAction().equals("com.feelingk.asp.pushagent.ERROR")) {
+				int errorCode = FlkAspSdk.convertError(intent);
+				// 응답 코드 참조
+			}
+		}
+	}
+	```
+4. 응답 코드
 
 	| Code  |  Message                       | 설명                                                 |
 	|:-----:|--------------------------------|-----------------------------------------------------|
@@ -290,16 +242,6 @@
 
 
 <br>
-### Class Reference
-<hr/>
-
-|FLKPushInterface |설명  |
-|-----------------|------|
-| FLKPushInterface|FLKPushAgentLIB 사용을 위한 Interface 생성자<br>Parameters<br> * Context : Activity or Application Context <br> * UserKey (Option): App Service에 사용되는 사용자 고유 키 값<br>* OnPushLibResultListener : FLKPushAgentLIB와의 연동 결과를 전달 받기 위한 리스너 |
-|interfaceInit() | Agent와 연동. Agent 연동 결과는 OnPushLibResultListener onResult로 전달 받는다. (`Screenshot Flow` 항목 참고) |
-|sendToReceiveActivity()|Agent 내 수신함 연동. <br>interfaceInit() 함수를 통해 onResult에 '1000' 코드 받았을 시에만 정상적으로 화면 연동 가능하다.<br> '1000' 외의 코드 전달 받았을 시 interfaceInit()과 동작 Flow는 동일하다.|
-
-
 <br>
 <br>
 <br>
