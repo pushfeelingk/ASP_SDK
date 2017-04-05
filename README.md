@@ -49,34 +49,32 @@
 		</intent-filter>
 	</receiver>
 	```
-<br>	
 2. Eclipse에서 개발하기 
 	
  	* ASP SDK Project를 다운로드 받아 Eclipse에 import한다. SDK를 적용할 프로젝트의 Properties를 선택한다. Library영역에 FLK_ASP_SDK를 추가한다.
   
 		<img src="https://cloud.githubusercontent.com/assets/22470636/24691405/3ca13cde-1a0e-11e7-973b-6da36883b7dc.png" />
 
-<br>
 	* AndroidManifest.xml을 설정한다.
 		* user-permission 리스트를 적용한다.
 	```xml
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+	    <uses-permission android:name="android.permission.INTERNET" />
+	    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+	    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+	    <uses-permission android:name="android.permission.BLUETOOTH" />
+	    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    ```
-		* 아래의 규격은 FLK_OLYMPUS_SDK 내에서 사용하는 연동 규격들로, 'application' 태그 내에 적용한다.
+	    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    	```
+		* 아래의 규격은 FLK_ASP_SDK 내에서 사용하는 연동 규격들로, 'application' 태그 내에 적용한다.
 	```xml
-    <meta-data android:name="flk.asp.AppID" android:value="@string/flk_asp_appid" />
+    	<meta-data android:name="flk.asp.AppID" android:value="@string/flk_asp_appid" />
     
     	<receiver android:name="com.flk.asp.FLKPushAgentReceiver" >
             <intent-filter>
@@ -171,14 +169,12 @@
         </receiver>
         <provider android:name="com.feelingk.pushagent.db.DataContentProvider" android:authorities="[packageName]" android:exported="true"/>
 	```
-<br>	
 #### Proguard 예외 구문
 	```txt
 	-dontwarn org.apache.**
 	-keep class com.feelingk.pushagent.** { *; }
 	-keep class com.flk.asp.** { *; }
 	```
-<br>
 #### SDK 적용 및 Sample Code
 1. res > values > strings.xml에 AppID값을 등록한다. 
 	```xml
