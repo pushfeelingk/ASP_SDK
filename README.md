@@ -44,10 +44,10 @@
 	* AndroidManifest.xml을 설정한다.
 	```xml
 	<receiver android:name="(package_name).FlkAspMessageReceiver" >
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.receive_message" />
-            </intent-filter>
-        </receiver>
+		<intent-filter>
+			<action android:name="com.feelingk.asp.pushagent.receive_message" />
+		</intent-filter>
+	</receiver>
 	```
 <br>	
 2. Eclipse에서 개발하기 
@@ -173,7 +173,7 @@
 	```
 <br>	
 #### Proguard 예외 구문
-	``` txt
+	```txt
 	-dontwarn org.apache.**
 	-keep class com.feelingk.pushagent.** { *; }
 	-keep class com.flk.asp.** { *; }
