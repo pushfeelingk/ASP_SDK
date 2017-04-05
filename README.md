@@ -45,7 +45,8 @@
 	```xml
 	<receiver android:name="(package_name).FlkAspMessageReceiver" >
 		<intent-filter>
-			<action android:name="com.feelingk.asp.pushagent.receive_message" />
+			<action android:name="com.feelingk.asp.receive.MESSAGE" />
+			<action android:name="com.feelingk.asp.receive.ERROR" />
 		</intent-filter>
 	</receiver>
 	```
@@ -218,11 +219,11 @@
 	| 700   | User Terms Agree Fail          | 사용자가 OLYMPUS Agent 사용 약관 미동의로 인해 서비스 이용불가  |
 	| 993   | Not Ready State                | Agent 서비스 동작 준비중 상태                             |
 	| 995   | Parameter Error                | RID Parameter 값 오류           					  |
-  | 996   | Fail Connection                | RID 발급 요청에 대한 서버응답 Null로 인한 RID 발급 실패 오류	  |
+	| 996   | Fail Connection                | RID 발급 요청에 대한 서버응답 Null로 인한 RID 발급 실패 오류	  |
 	| 998   | Push Service License Fail      | Agent Service License Fail  						   |
 	| 999   | Service License Fail           | 인증되지 않은 AppID나 Package 사용 오류  				  |
-	| 1000  | Linked Success                 | Agent 연동 성공   							 		 |
-	| 1001  | User App Install Fail          | 사용자가 OLYMPUS Agent 설치를 거부하여 서비스 이용 불가 	   |
+	| 1000  | Linked Success                 | Agent 연동 성공							|
+	| 1001  | User App Install Fail          | 사용자가 OLYMPUS Agent 설치를 거부하여 서비스 이용 불가	|
 
 
 
