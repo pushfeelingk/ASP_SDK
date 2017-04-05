@@ -58,119 +58,108 @@
 	* AndroidManifest.xml을 설정한다.
 		* user-permission 리스트를 적용한다.
 	```xml
-	    <uses-permission android:name="android.permission.INTERNET" />
-	    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-	    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-	    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	    <uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
-	    <uses-permission android:name="android.permission.BLUETOOTH" />
-	    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
-	    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    	```
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	```
 		* 아래의 규격은 FLK_ASP_SDK 내에서 사용하는 연동 규격들로, 'application' 태그 내에 적용한다.
 	```xml
-    	<meta-data android:name="flk.asp.AppID" android:value="@string/flk_asp_appid" />
-    
-    	<receiver android:name="com.flk.asp.FLKPushAgentReceiver" >
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.lib.RECEIVED_APP_REG_ID" />
-                <action android:name="com.feelingk.asp.pushagent.lib.RECEIVED_REG_PARAM_ERROR" />
-                <action android:name="com.feelingk.asp.pushagent.lib.RECEIVED_REG_RESULT_ERROR" />
-                <action android:name="com.feelingk.asp.pushagent.lib.RECEIVED_APP_MSG_INFO"/>
-
-                <data android:host="asp" android:scheme="flk_push" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.lib.REQUEST_APP_STATE" />
-                <action android:name="com.feelingk.asp.pushagent.lib.REQUEST_READY_FOR_AGENT" />
-            </intent-filter>
-        </receiver>
-        
-        <receiver
-            android:name="com.feelingk.pushagent.service.PushAgentServiceManager"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <data android:scheme="package" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.lib.APP_REGISTRATION" />
-                <action android:name="com.feelingk.asp.pushagent.lib.SERVICE_START" />
-				<action android:name="com.feelingk.asp.pushagent.lib.SERVICE_SHARED_INFO"/>
-                <data android:host="asp" android:scheme="flk_push" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.lib.RESPONSE_READ_MSG" />
-                <action android:name="com.feelingk.asp.pushagent.lib.AGENT_PAUSE" />
-                <action android:name="com.feelingk.asp.pushagent.lib.SERVICE_START" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="com.feelingk.pushagent.service.NetworkStateMonitor" >
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-
-         <receiver
-            android:name="com.feelingk.pushagent.service.PushAgentAlarmManager"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.lib.action.checkprocess" />
-                <action android:name="com.feelingk.asp.pushagent.lib.action.delayprocess" />
-                <action android:name="com.feelingk.asp.pushagent.lib.action.force" />
-                <action android:name="com.feelingk.asp.pushagent.lib.action.socket" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.feelingk.pushagent.service.PushAgentServiceAlarmManager"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.lib.service.postdelayed" />
-                <action android:name="com.feelingk.asp.pushagent.lib.service.sleepdelayed"/>
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name="com.feelingk.pushagent.service.PushAgentService"
-            android:enabled="true" >
-        </service>
-
-        <service android:name="com.feelingk.pushagent.service.RIDInfoValidCheckService" />
-
-        <activity
-            android:name="com.feelingk.pushagent.popup.WakeUpActivity"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        <receiver android:name="(package_name).FlkAspMessageReceiver" >
-            <intent-filter>
-                <action android:name="com.feelingk.asp.pushagent.RECEIVE_MESSAGE" />
-		<action android:name="com.feelingk.asp.pushagent.ERROR" />
-            </intent-filter>
-        </receiver>
-        <provider android:name="com.feelingk.pushagent.db.DataContentProvider" android:authorities="[packageName]" android:exported="true"/>
+	<meta-data android:name="flk.asp.AppID" android:value="@string/flk_asp_appid" />
+	
+	<receiver android:name="com.flk.asp.FLKPushAgentReceiver" >
+		<intent-filter>
+			<action android:name="com.feelingk.asp.pushagent.lib.RECEIVED_APP_REG_ID" />
+			<action android:name="com.feelingk.asp.pushagent.lib.RECEIVED_REG_PARAM_ERROR" />
+			<action android:name="com.feelingk.asp.pushagent.lib.RECEIVED_REG_RESULT_ERROR" />
+			<action android:name="com.feelingk.asp.pushagent.lib.RECEIVED_APP_MSG_INFO"/>
+			
+			<data android:host="asp" android:scheme="flk_push"  />
+			
+			<category android:name="android.intent.category.DEFAULT" />
+		</intent-filter>
+		<intent-filter>
+			<action android:name="com.feelingk.asp.pushagent.lib.REQUEST_APP_STATE" />
+			<action android:name="com.feelingk.asp.pushagent.lib.REQUEST_READY_FOR_AGENT" />
+		</intent-filter>
+	</receiver>
+	
+	<receiver android:name="com.feelingk.pushagent.service.PushAgentServiceManager">
+		<intent-filter>
+			<action android:name="android.intent.action.BOOT_COMPLETED" />
+		</intent-filter>
+		<intent-filter>
+			<action android:name="android.intent.action.PACKAGE_REMOVED" />
+			<action android:name="android.intent.action.PACKAGE_ADDED" />
+			<data android:scheme="package" />
+		</intent-filter>
+		<intent-filter>
+			<action android:name="com.feelingk.asp.pushagent.lib.APP_REGISTRATION" />
+			<action android:name="com.feelingk.asp.pushagent.lib.SERVICE_START" />
+			<action android:name="com.feelingk.asp.pushagent.lib.SERVICE_SHARED_INFO"/>
+			<data android:host="asp" android:scheme="flk_push" />
+			<category android:name="android.intent.category.DEFAULT" />
+		</intent-filter>
+		<intent-filter>
+			<action android:name="com.feelingk.asp.pushagent.lib.RESPONSE_READ_MSG" />
+			<action android:name="com.feelingk.asp.pushagent.lib.AGENT_PAUSE" />
+			<action android:name="com.feelingk.asp.pushagent.lib.SERVICE_START" />
+			<category android:name="android.intent.category.DEFAULT" />
+		</intent-filter>
+	</receiver>
+	
+	<receiver android:name="com.feelingk.pushagent.service.NetworkStateMonitor" >
+		<intent-filter>
+			<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+		</intent-filter>
+	</receiver>
+	
+	<receiver android:name="com.feelingk.pushagent.service.PushAgentAlarmManager">
+		<intent-filter>
+			<action android:name="com.feelingk.asp.pushagent.lib.action.checkprocess" />
+			<action android:name="com.feelingk.asp.pushagent.lib.action.delayprocess" />
+			<action android:name="com.feelingk.asp.pushagent.lib.action.force" />
+			<action android:name="com.feelingk.asp.pushagent.lib.action.socket" />
+		</intent-filter>
+	</receiver>
+	<receiver android:name="com.feelingk.pushagent.service.PushAgentServiceAlarmManager">
+		<intent-filter>
+			<action android:name="com.feelingk.asp.pushagent.lib.service.postdelayed" />
+			<action android:name="com.feelingk.asp.pushagent.lib.service.sleepdelayed"/>
+		</intent-filter>
+	</receiver>
+	
+	<service android:name="com.feelingk.pushagent.service.PushAgentService"/>
+	<service android:name="com.feelingk.pushagent.service.RIDInfoValidCheckService" />
+	<activity
+		android:name="com.feelingk.pushagent.popup.WakeUpActivity"
+		android:clearTaskOnLaunch="true"
+		android:configChanges="keyboardHidden|orientation|screenSize"
+		android:excludeFromRecents="true"
+		android:launchMode="singleTask"
+		android:theme="@android:style/Theme.Translucent.NoTitleBar"
+		android:windowSoftInputMode="stateAlwaysHidden" >
+	</activity>
+	<receiver android:name="(package_name).FlkAspMessageReceiver" >
+		<intent-filter>
+			<action android:name="com.feelingk.asp.receive.MESSAGE" />
+			<action android:name="com.feelingk.asp.receive.ERROR" />
+		</intent-filter>
+	</receiver>
+	<provider android:name="com.feelingk.pushagent.db.DataContentProvider" android:authorities="[packageName]" android:exported="true"/>
 	```
-#### Proguard 예외 구문
-	```txt
+#### Proguard
+1. 예외 구문	
+	``` txt
 	-dontwarn org.apache.**
 	-keep class com.feelingk.pushagent.** { *; }
 	-keep class com.flk.asp.** { *; }
@@ -181,7 +170,7 @@
     <resources>
     	<string name="flk_asp_appid">[Fleeingk로부터 발급 받은 10자리의 AppID]</string>
 	</resources>
-    ```
+	```
 2. 'FLKPushAgentLIB'를 사용할 Activity에 아래와 같이 구현한다.
 	```java
 	public class ExampleActivity extends AppCompatActivity {
@@ -197,9 +186,9 @@
 	}
 	```
 3. GCM Receiver에서 처리
-	* Register or TokenRefresh 후
+	* Register 후 or TokenRefresh 후 or App 실행시
 	```java
-	FlkAspSdk.setGcmKey(context, "<gcm_reg_id>");
+	FlkAspSdk.setGcmToken(context, "<gcm_token_id>");
 	```
 	* Message 수신 후
 	```java
@@ -210,12 +199,12 @@
 	public class FlkAspMessageReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(final Context context, Intent intent) {
-			if (intent.getAction().equals("com.feelingk.asp.pushagent.RECEIVE_MESSAGE")) {
+			if (intent.getAction().equals("com.feelingk.asp.receive.MESSAGE")) {
 				FlkPushMessage pushMessage = FlkAspSdk.convertMessage(intent);
 				if (pushMessage != null) {
 					// 메시지 처리
 				}
-			} else if (intent.getAction().equals("com.feelingk.asp.pushagent.ERROR")) {
+			} else if (intent.getAction().equals("com.feelingk.asp.receive.ERROR")) {
 				int errorCode = FlkAspSdk.convertError(intent);
 				// 응답 코드 참조
 			}
