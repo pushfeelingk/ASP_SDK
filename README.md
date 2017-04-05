@@ -29,46 +29,28 @@
 #### 개발환경 구성
 1. AndroidStudio에서 개발하기
 
-	* ASP SDK Project를 다운받는다. Project Structure를 열고 Module 추가를 선택한다. 
-	* Import Eclipse ADT Project를 선택하고 next 버튼을 누른다.
+	* ASP AAR파일을 다운받는다. Project Structure를 열고 Module 추가를 선택한다. 
+	* Import .JAR/.AAR Package를 선택하고 next 버튼을 누른다.
 
-        <img src="https://cloud.githubusercontent.com/assets/22470636/20710222/aef11a02-b67c-11e6-859f-9d0180c5cce9.png"/>
+        <img src="https://cloud.githubusercontent.com/assets/22470636/24691174/e1b02354-1a0c-11e7-887c-459ff66ee5fa.png"/>
         
-	* ASP SDK Projcet를 다운 받은 경로를 선택하고, Module name를 확인한다.
+	* ASP AAR파일을 다운 받은 경로를 선택하고, Module name를 확인한다.
 
-	<img src="https://cloud.githubusercontent.com/assets/22470636/20710221/aef0feaa-b67c-11e6-92e5-9f0243f6f2e3.png"/>
+	<img src="https://cloud.githubusercontent.com/assets/22470636/24691181/f12a9b34-1a0c-11e7-9066-79c44a7f968c.png"/>
                 
 	* app > Dependencies에서 위에서 추가한 module Dependency를 등록한다.
-	<img src="https://cloud.githubusercontent.com/assets/22470636/20710223/aef187bc-b67c-11e6-84dd-9b45aa9ee2a9.png"/>
+	<img src="https://cloud.githubusercontent.com/assets/22470636/24691190/fe8b67e0-1a0c-11e7-894e-f1ed9d1d84e2.png"/>
 
 
 	
 2. Eclipse에서 개발하기 
 	
- 	* ASP SDK Project를 다운로드 받아 Eclipse에 import한다. SDK를 적용할 프로젝트의 Properties를 선택한다. Library영역에 FLK_Asp_SDK를 추가한다.
+ 	* ASP SDK Project를 다운로드 받아 Eclipse에 import한다. SDK를 적용할 프로젝트의 Properties를 선택한다. Library영역에 FLK_ASP_SDK를 추가한다.
   
-		<img src="https://cloud.githubusercontent.com/assets/22470636/20701794/2b9f07dc-b658-11e6-927e-2be3a24515c4.png" />
+		<img src="https://cloud.githubusercontent.com/assets/22470636/24691405/3ca13cde-1a0e-11e7-973b-6da36883b7dc.png" />
 
-3. 프로가드 적용시 아래 설정을 추가한다.
-	``` txt
-	-dontwarn org.apache.**
-	-keep class com.feelingk.pushagent.** { *; }
-	-keep class com.flk.asp.** { *; }
-	```
-
-<br>
-    
-#### SDK 적용 및 Sample Code
-1. Sample Project에 assets폴더에 있는 'flk_asp_push_terms.html' 파일을 SDK를 적용할 Project의 assets폴더에 복사한다.
-2. res > values > strings.xml에 AppID값을 등록한다. 
-	```xml
-    <resources>
-    	<string name="flk_asp_appid">[Fleeingk로부터 발급 받은 10자리의 AppID]</string>
-	</resources>
-    ```
-
-3. AndroidManifest.xml을 설정한다. 
-	* user-permission 리스트를 적용한다.
+	* AndroidManifest.xml을 설정한다.
+		* user-permission 리스트를 적용한다.
 	```xml
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -84,7 +66,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     ```
-	* 아래의 규격은 FLK_OLYMPUS_SDK 내에서 사용하는 연동 규격들로, 'application' 태그 내에 적용한다.
+		* 아래의 규격은 FLK_OLYMPUS_SDK 내에서 사용하는 연동 규격들로, 'application' 태그 내에 적용한다.
 	```xml
     <meta-data android:name="flk.asp.AppID" android:value="@string/flk_asp_appid" />
     
@@ -234,9 +216,24 @@
         
         <provider android:name="com.feelingk.pushagent.db.DataContentProvider" android:authorities="[packageName]" android:exported="true"/>
 	```
-    
+    	
+3. 프로가드 적용시 아래 설정을 추가한다.
+	``` txt
+	-dontwarn org.apache.**
+	-keep class com.feelingk.pushagent.** { *; }
+	-keep class com.flk.asp.** { *; }
+	```
 
-4. 'FLKPushAgentLIB'를 사용할 Activity에 아래와 같이 구현한다.
+<br>
+    
+#### SDK 적용 및 Sample Code
+1. res > values > strings.xml에 AppID값을 등록한다. 
+	```xml
+    <resources>
+    	<string name="flk_asp_appid">[Fleeingk로부터 발급 받은 10자리의 AppID]</string>
+	</resources>
+    ```
+2. 'FLKPushAgentLIB'를 사용할 Activity에 아래와 같이 구현한다.
 	```java
 	public class ExampleActivity extends AppCompatActivity implements FLKPushInterface.OnPushLibResultListener{
 
@@ -277,7 +274,7 @@
 	}
 	```
 
-5. 응답 코드
+3. 응답 코드
 
 	| Code  |  Message                       | 설명                                                 |
 	|:-----:|--------------------------------|-----------------------------------------------------|
@@ -301,18 +298,6 @@
 | FLKPushInterface|FLKPushAgentLIB 사용을 위한 Interface 생성자<br>Parameters<br> * Context : Activity or Application Context <br> * UserKey (Option): App Service에 사용되는 사용자 고유 키 값<br>* OnPushLibResultListener : FLKPushAgentLIB와의 연동 결과를 전달 받기 위한 리스너 |
 |interfaceInit() | Agent와 연동. Agent 연동 결과는 OnPushLibResultListener onResult로 전달 받는다. (`Screenshot Flow` 항목 참고) |
 |sendToReceiveActivity()|Agent 내 수신함 연동. <br>interfaceInit() 함수를 통해 onResult에 '1000' 코드 받았을 시에만 정상적으로 화면 연동 가능하다.<br> '1000' 외의 코드 전달 받았을 시 interfaceInit()과 동작 Flow는 동일하다.|
-
-
-<br>
-### Screenshot Flow
-<hr/>
-
-* FLKPushAgentLIB 동작 순서
-
-|Sreenshot |Step  |
-|-----------------|------|
-|<img src="https://cloud.githubusercontent.com/assets/22470636/18987235/b97fe072-873b-11e6-946b-e1fbd37deb49.png" width="320" height="400" alt="step3" /> | * Step1. 최초 1회 interfaceInit() 함수 호출 시  '위치 및 마케팅 이용동의' 팝업 노출<br> - '아니오' 버튼 선택 시, 최초 1회는 '700' 코드 전달 되며, 이후 interfaceInit() 함수 호출 시 '1001' 코드로 전달<br>- '예' 버튼 선택 시, Agent 와 연동 결과 코드 전달. 정상 연동시 '1000' 코드 전달|
-|<img src="https://cloud.githubusercontent.com/assets/22470636/18988068/e756a086-873f-11e6-95ac-b841f07f6781.jpg" width="320" height="400" alt="step3" />|* Step2. sendToReceiveActivity() 함수 호출 시 Agent 내의 Message Box 연동<br> - Agent와 정상적으로 연동되어 '1000'코드를 받은 후 Step4 진행 시 Message Box 화면으로 연동 된다.<br> - '1000' 외의 코드를 전달 받은 후 Step4 진행 시 Step1 부터 진행된다.|
 
 
 <br>
